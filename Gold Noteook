@@ -12,6 +12,37 @@ print(f"Start Date: {start_date}, Gold ADLS: {gold_adls}")
 
 
 
+''' Data Factory
+
+import json
+
+# Get base parameters
+dbutils.widgets.text("bronze_params", "")
+dbutils.widgets.text("silver_params", "")
+
+bronze_params = dbutils.widgets.get("bronze_params")
+silver_params = dbutils.widgets.get("silver_params")
+
+# Debug: Print the raw input values for troubleshooting
+print(f"Raw bronze_params: {bronze_params}")
+print(f"Raw silver_params: {silver_params}")
+
+# Parse the JSON string
+bronze_data = json.loads(bronze_params)
+
+# Access individual variables
+start_date = bronze_data.get("start_date", "")
+end_date = bronze_data.get("end_date", "")
+silver_adls = bronze_data.get("silver_adls", "")
+gold_adls = bronze_data.get("gold_adls", "")
+silver_data = silver_params
+
+# Debug: Print the extracted values for verification
+print(f"Start Date: {start_date}, End Date: {end_date}")
+print(f"Silver ADLS Path: {silver_adls}, Gold ADLS Path: {gold_adls}")
+'''
+
+
 from pyspark.sql.functions import when, col, udf
 from pyspark.sql.types import StringType
 # Ensure the below library is installed on your cluster
