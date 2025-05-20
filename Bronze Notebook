@@ -14,14 +14,24 @@ dbutils.fs.ls(silver_adls)
 dbutils.fs.ls(gold_adls)
 
 
+''' Data Factory
+# Get base parameters
+dbutils.widgets.text("start_date", "")
+dbutils.widgets.text("end_date", "")
+start_date = dbutils.widgets.get("start_date")
+end_date = dbutils.widgets.get("end_date")
+'''
 
 
 import requests
 import json
 from datetime import date, timedelta
+
+# Remove this before running Data Factory Pipeline
 start_date = date.today() - timedelta(1)
 end_date = date.today()
 
+start_date, end_date
 
 
 # Construct the API URL with start and end dates provided by Data Factory, formatted for geojson output.
@@ -51,15 +61,22 @@ except requests.exceptions.RequestException as e:
 
 
 
-
+''' Data Factory
 # Define your variables
 output_data = {
-    "start_date": start_date.isoformat(),
-    "end_date": end_date.isoformat(),
+    "start_date": start_date,
+    "end_date": end_date,
     "bronze_adls": bronze_adls,
     "silver_adls": silver_adls,
     "gold_adls": gold_adls
 }
 
-# Return the dictionary directly
-dbutils.jobs.taskValues.set(key = "bronze_output", value = output_data)
+# Serialize the dictionary to a JSON string
+output_json = json.dumps(output_data)
+
+# Log the serialized JSON for debugging
+print(f"Serialized JSON: {output_json}")
+
+# Return the JSON string
+dbutils.notebook.exit(output_json)
+'''
