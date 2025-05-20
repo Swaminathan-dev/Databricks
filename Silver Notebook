@@ -10,6 +10,25 @@ silver_adls = bronze_output.get("silver_adls", "")
 print(f"Start Date: {start_date}, Bronze ADLS: {bronze_adls}")
 
 
+''' Data Factory
+import json
+
+# Retrieve the bronze_params directly as a widget
+bronze_params = dbutils.widgets.get("bronze_params")
+print(f"Raw bronze_params: {bronze_params}")
+
+# Parse the JSON string
+output_data = json.loads(bronze_params)
+
+# Access individual variables
+start_date = output_data.get("start_date", "")
+end_date = output_data.get("end_date", "")
+bronze_adls = output_data.get("bronze_adls", "")
+silver_adls = output_data.get("silver_adls", "")
+gold_adls = output_data.get("gold_adls", "")
+
+print(f"Start Date: {start_date}, Bronze ADLS: {bronze_adls}")
+'''
 
 from pyspark.sql.functions import col, isnull, when
 from pyspark.sql.types import TimestampType
@@ -70,9 +89,12 @@ silver_output_path = f"{silver_adls}earthquake_events_silver/"
 df.write.mode('append').parquet(silver_output_path)
 
 
-
+''' Data Factory
+dbutils.notebook.exit(silver_output_path)
+'''
+'''
 dbutils.jobs.taskValues.set(key = "silver_output", value = silver_output_path)
 
-
+'''
 
 
